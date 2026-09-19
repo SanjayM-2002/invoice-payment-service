@@ -1,0 +1,25 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT id FROM invoices\n         WHERE business_id = $1\n           AND ($2::text IS NULL OR status = $2)\n           AND ($3::text IS NULL OR id < $3)\n         ORDER BY id DESC\n         LIMIT $4",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Text",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "85544b3ccda784416fd4385f8f02132a1f4edb22106dd8cf3a59a6dda7490e6a"
+}

@@ -1,0 +1,24 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO idempotency_keys\n             (business_id, key, request_hash, status, expires_at)\n         VALUES ($1, $2, $3, 'in_progress', now() + interval '24 hours')\n         ON CONFLICT (business_id, key) DO UPDATE\n            SET request_hash  = EXCLUDED.request_hash,\n                status        = 'in_progress',\n                response_code = NULL,\n                response_body = NULL,\n                attempt_id    = NULL,\n                created_at    = now(),\n                expires_at    = EXCLUDED.expires_at\n          WHERE idempotency_keys.expires_at < now()\n         RETURNING key",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "key",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "98f8cb1af3c3b07b8d69c60096b867f640fb80e86681095388670f4a017e0980"
+}

@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE payment_attempts\n            SET reconcile_attempts = $1,\n                next_reconcile_at = now() + ($2::int * interval '1 second')\n          WHERE id = $3",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int4",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "3540544f4234250922e5c4792bee121de264c7d1e15678b0ddc2d4b35c59fc7e"
+}

@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE idempotency_keys SET attempt_id = $1\n          WHERE business_id = $2 AND key = $3",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "a8c8b0b8f0c3ff15e00c23d7f73b6cb0cf5bddd4488104643d20b5f105a5a653"
+}

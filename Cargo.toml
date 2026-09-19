@@ -1,0 +1,31 @@
+[workspace]
+resolver = "2"
+members = ["crates/invoice-service", "crates/mock-psp", "crates/webhook-receiver"]
+
+# So a bare `cargo run` starts the main service. The mock PSP needs
+# `cargo run -p mock-psp`.
+default-members = ["crates/invoice-service"]
+
+# One place for versions. Member crates write `tokio.workspace = true`
+# and inherit from here — like a root package.json pinning versions
+# that workspaces then reference.
+[workspace.dependencies]
+tokio        = { version = "1", features = ["full"] }
+axum         = "0.8"
+tower-http   = { version = "0.6", features = ["trace"] }
+sqlx         = { version = "0.8", default-features = false, features = [
+                 "runtime-tokio-rustls", "postgres", "chrono", "uuid", "json", "macros", "migrate" ] }
+serde        = { version = "1", features = ["derive"] }
+serde_json   = "1"
+uuid         = { version = "1", features = ["v7", "serde"] }
+chrono       = { version = "0.4", features = ["serde"] }
+thiserror    = "2"
+anyhow       = "1"
+dotenvy      = "0.15"
+sha2         = "0.10"
+rand         = "0.8"
+hmac         = "0.12"
+hex          = "0.4"
+reqwest      = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+tracing      = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }

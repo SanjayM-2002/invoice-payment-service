@@ -1,0 +1,16 @@
+[package]
+name    = "mock-psp"
+version = "0.1.0"
+edition = "2021"
+
+# Note how short this list is compared to invoice-service: no sqlx, no sha2,
+# no chrono. That's the point of a workspace with separate binaries -- each
+# program compiles only what it actually uses.
+[dependencies]
+tokio.workspace              = true
+axum.workspace               = true
+serde.workspace              = true
+serde_json.workspace         = true
+uuid.workspace               = true
+tracing.workspace            = true
+tracing-subscriber.workspace = true

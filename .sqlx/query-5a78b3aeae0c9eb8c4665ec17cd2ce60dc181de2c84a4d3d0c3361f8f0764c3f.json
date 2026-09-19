@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE payment_attempts\n                    SET status = 'failed', failure_code = $1, resolved_at = now()\n                  WHERE id = $2",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "5a78b3aeae0c9eb8c4665ec17cd2ce60dc181de2c84a4d3d0c3361f8f0764c3f"
+}

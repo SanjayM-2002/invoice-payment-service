@@ -1,0 +1,18 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE idempotency_keys\n            SET status = 'completed',\n                response_code = $1,\n                response_body = $2,\n                attempt_id = $3\n          WHERE business_id = $4 AND key = $5",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Jsonb",
+        "Text",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "c55cb863f7a0ab95ceec3f483b5012c1f4186cc383abf61f35c4366552ad047d"
+}

@@ -1,0 +1,41 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "WITH claimed AS (\n             UPDATE payment_attempts\n            SET next_reconcile_at = now() + ($1::int * interval '1 second')\n          WHERE id IN (\n              SELECT id FROM payment_attempts\n               WHERE status = 'pending'\n                 AND needs_review = false\n                 AND next_reconcile_at <= now()\n               ORDER BY next_reconcile_at\n               LIMIT $2\n               FOR UPDATE SKIP LOCKED\n          )\n        RETURNING id, invoice_id, reconcile_attempts\n         )\n         SELECT c.id, c.invoice_id, c.reconcile_attempts, i.business_id\n           FROM claimed c JOIN invoices i ON i.id = c.invoice_id",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "invoice_id",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "reconcile_attempts",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "business_id",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "21abe203c590cad597dba53542b525b9b0bb2df48535d27e8a88e3fe1d0b47a3"
+}

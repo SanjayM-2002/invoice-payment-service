@@ -1,0 +1,12 @@
+target
+.env
+.git
+**/node_modules
+
+# Not needed inside the image -- and if they were copied, editing any of them
+# (even a comment) would bust the `COPY . .` cache and trigger a full rebuild.
+Dockerfile
+.dockerignore
+docker-compose.yml
+*.md
+.vscode

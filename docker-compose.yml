@@ -1,0 +1,53 @@
+# Brings up Postgres, the invoice service, the mock payment processor and a
+# webhook receiver.
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: invoice_payments
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  mock-psp:
+    build: .
+    command: mock-psp
+    environment:
+      PORT: 9100
+    ports:
+      - "9100:9100"
+
+  webhook-receiver:
+    build: .
+    command: webhook-receiver
+    environment:
+      PORT: 9000
+      ATLAS_WEBHOOK_SECRET: whsec_test_atlas_9f3a7b2c1d4e5f60
+    ports:
+      - "9000:9000"
+
+  invoice-service:
+    build: .
+    command: invoice-service
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/invoice_payments
+      PORT: 8080
+      PSP_BASE_URL: http://mock-psp:9100
+      WEBHOOK_RECEIVER_BASE_URL: http://webhook-receiver:9000
+      RUST_LOG: invoice_service=info,warn
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mock-psp:
+        condition: service_started
+      webhook-receiver:
+        condition: service_started

@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE payment_attempts\n            SET status = 'succeeded', psp_ref = $1, resolved_at = now()\n          WHERE id = $2 AND status = 'pending'",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "0136b72d5f7ef24c312d0f20ae98e4a34b02ff6caaa153e67c1f092b41a46bff"
+}

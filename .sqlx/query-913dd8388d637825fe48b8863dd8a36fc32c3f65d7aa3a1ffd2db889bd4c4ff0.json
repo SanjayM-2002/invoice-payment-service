@@ -1,0 +1,65 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "WITH claimed AS (\n             UPDATE webhook_deliveries\n                SET next_attempt_at = now() + ($1::int * interval '1 second')\n              WHERE id IN (\n                  SELECT id FROM webhook_deliveries\n                   WHERE status = 'pending' AND next_attempt_at <= now()\n                   ORDER BY next_attempt_at\n                   LIMIT $2\n                   FOR UPDATE SKIP LOCKED\n              )\n             RETURNING id, event_id, endpoint_id, attempts\n         )\n         SELECT c.id, c.attempts, c.event_id,\n                e.url, e.secret,\n                ev.type AS event_type, ev.payload, ev.created_at\n           FROM claimed c\n           JOIN webhook_endpoints e ON e.id = c.endpoint_id\n           JOIN webhook_events    ev ON ev.id = c.event_id",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "attempts",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "event_id",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 3,
+        "name": "url",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "secret",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 5,
+        "name": "event_type",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 6,
+        "name": "payload",
+        "type_info": "Jsonb"
+      },
+      {
+        "ordinal": 7,
+        "name": "created_at",
+        "type_info": "Timestamptz"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "913dd8388d637825fe48b8863dd8a36fc32c3f65d7aa3a1ffd2db889bd4c4ff0"
+}
