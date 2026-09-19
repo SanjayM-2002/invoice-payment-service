@@ -5,8 +5,20 @@ customers pay them, and businesses are notified by signed webhooks.
 
 Rust · Axum · SQLx · PostgreSQL
 
+## Demo Video
+
+Part 1: https://www.loom.com/share/870838f9cd094d25bb6c5adf53923586
+
+Part 2: https://www.loom.com/share/29e6637022ed4a139d94f0e7438535ed
 
 
+## Documentation
+
+| Document | What's in it |
+|---|---|
+| **[DESIGN.md](DESIGN.md)** | The primary deliverable — data model, state machine, payment correctness and failure modes, webhooks, API keys, what was cut, and what's missing for production |
+| [API.md](API.md) | Every endpoint, request and response shapes, and the error format |
+| [AI_USAGE.md](AI_USAGE.md) | Which AI tools were used and for what, decisions made independently, and what had to be corrected |
 
 
 ---
